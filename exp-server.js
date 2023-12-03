@@ -21,6 +21,33 @@ let todoData = [
   },
 ];
 
+let rooms = [
+  {
+    id: "1",
+    isAvaliable: true,
+    price: 100,
+    seats: 2,
+  },
+  {
+    id: "1",
+    isAvaliable: true,
+    price: 100,
+    seats: 2,
+  },
+];
+
+let bookings = [
+  {
+    id: "2",
+    roomId: "2",
+    customerName: "Customer",
+    date: "2015-02-23",
+    startTime: "12:00:00",
+  },
+];
+
+let customers = [];
+
 // Todo APIs
 // /todos (GET) ---> get all the todos
 server.get("/todos", (req, res) => {
@@ -70,10 +97,16 @@ server.delete("/todos", (req, res) => {
   // get the todo which is being deleted
   const delTodo = todoData.find((todo) => todo.id === deleteId);
 
-  todoData = todoData.filter((todo) => todo.id !== deleteId);
+  if (delTodo) {
+    todoData = todoData.filter((todo) => todo.id !== deleteId);
 
-  res.send(delTodo);
+    res.send(delTodo);
+  } else {
+    res.send({ msg: "Todo not found or already deleted" });
+  }
 });
+
+``;
 
 const port = 8000;
 
