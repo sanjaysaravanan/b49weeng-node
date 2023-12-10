@@ -35,7 +35,7 @@ usersRouter.post("/", async (req, res) => {
       ...body,
       userId: Date.now().toString(),
     });
-    await newuser.save(); // inserting a new user
+    await newuser.save(); // validate & insert a new user
     res.send({ msg: "User Created Successfully" });
   } catch (err) {
     console.log(err);
@@ -53,13 +53,17 @@ usersRouter.put("/:userId", async (req, res) => {
       ...body,
       userId,
     };
+    await new userModel(newBody).validate(); // manually validate
 
-    // ToDo: validation not working wil comeback on this
-    await new userModel(newBody);
+    const user = await userModel.findOne({ userId: userId });
 
-    await userModel.updateOne({ userId }, { $set: newBody });
+    if (user) {
+      await userModel.updateOne({ userId }, { $set: newBody });
 
-    res.send({ msg: "User Updated Successfully" });
+      res.send({ msg: "User Updated Successfully" });
+    } else {
+      res.status(404).send({ msg: "User Not Found" });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({ msg: "Error Occured while updating an user" });
