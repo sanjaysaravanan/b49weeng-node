@@ -36,7 +36,7 @@ usersRouter.post("/", async (req, res) => {
       userId: Date.now().toString(),
     });
     await newuser.save(); // validate & insert a new user
-    res.send({ msg: "User Created Successfully" });
+    res.send(newuser);
   } catch (err) {
     console.log(err);
     res.status(500).send({ msg: "Error Occured while Creating an user" });

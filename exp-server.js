@@ -1,6 +1,6 @@
 // const express = require("express");
 import express from "express";
-
+import cors from "cors";
 // cjs importing custom module
 // const todosRouter = require("./routes/todos");
 
@@ -16,6 +16,8 @@ await connectToDb();
 
 // middleware to process the body of the request
 server.use(express.json()); // used to parse the body of the request
+// middleware used to make our APIs cors compatible
+server.use(cors());
 
 // usage of express router
 server.use("/api/todos", todosRouter);
