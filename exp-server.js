@@ -21,6 +21,24 @@ server.use(express.json()); // used to parse the body of the request
 // middleware used to make our APIs cors compatible
 server.use(cors());
 
+// Logging middleware - used to log the request incoming at what time
+const logger = (req, res, next) => {
+  console.log("##", new Date().toISOString(), "##", req.url, " ", req.method);
+
+  // next - go to the logic in routing
+  next();
+  // console.log(
+  //   "## Request Completed at",
+  //   new Date().toISOString(),
+  //   "##",
+  //   req.url,
+  //   " ",
+  //   req.method
+  // );
+};
+
+server.use(logger);
+
 // usage of express router
 server.use("/api/todos", todosRouter);
 server.use("/api/users", usersRouter);

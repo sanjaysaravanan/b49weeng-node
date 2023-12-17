@@ -28,6 +28,10 @@ const usersSchema = new mongoose.Schema({
     type: "string",
     required: true,
   },
+  isAccountVerified: {
+    type: "boolean",
+    required: true,
+  },
 });
 
 const userModel = new mongoose.model("user", usersSchema, "users");

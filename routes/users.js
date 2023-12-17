@@ -3,10 +3,17 @@ import { userModel } from "../db-utils/models.js";
 
 const usersRouter = express.Router();
 
+const samPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Sample");
+  }, 1000);
+});
+
 // Get all Users
 usersRouter.get("/", async (req, res) => {
   try {
     const users = await userModel.find({}, { _id: 0, __v: 0 });
+    await samPromise;
     res.send(users);
   } catch (err) {
     console.log(err);
@@ -86,6 +93,11 @@ usersRouter.delete("/:userId", async (req, res) => {
     console.log(err);
     res.status(500).send({ msg: "Error in deleting the user" });
   }
+});
+
+usersRouter.get("/redirect/:url", (req, res) => {
+  const { url } = req.params;
+  res.redirect(url);
 });
 
 export default usersRouter;
