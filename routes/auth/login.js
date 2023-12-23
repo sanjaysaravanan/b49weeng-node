@@ -23,7 +23,7 @@ loginRouter.post("/", async (req, res) => {
           msg: "User authenticated successfully",
           userDetails: authenticatedUser,
           code: 1,
-          accessToken: generateToken({ email: body.email }, "10s"),
+          accessToken: generateToken({ email: body.email }, "1d"),
         });
       } else {
         res.status(401).send({ msg: "Invalid Credentials", code: 0 });
