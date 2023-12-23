@@ -12,7 +12,7 @@ const samPromise = new Promise((resolve, reject) => {
 // Get all Users
 usersRouter.get("/", async (req, res) => {
   try {
-    const users = await userModel.find({}, { _id: 0, __v: 0 });
+    const users = await userModel.find({}, { _id: 0, __v: 0, password: 0 });
     await samPromise;
     res.send(users);
   } catch (err) {

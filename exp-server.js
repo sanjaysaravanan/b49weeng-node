@@ -1,6 +1,7 @@
 // const express = require("express");
 import express from "express";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 // cjs importing custom module
 // const todosRouter = require("./routes/todos");
 
@@ -37,11 +38,32 @@ const logger = (req, res, next) => {
   // );
 };
 
+// public apis ( /login, /register ) - open to everyone
+// middleware to authorize the private apis ( /users, /todos )
+// should be open only the logged in user whose is having a proper session
+const authorizationMiddleware = (req, res, next) => {
+  console.log("authorization middleware", req.headers);
+
+  const authToken = req.headers["auth-token"];
+
+  try {
+    jwt.verify(authToken, process.env.JWT_SECRET);
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(401).send({ msg: "Unauthorized User" });
+  }
+};
+
 server.use(logger);
 
+// this line will make all apis private even the /login /register
+// server.use(authorizationMiddleware);
+
 // usage of express router
-server.use("/api/todos", todosRouter);
-server.use("/api/users", usersRouter);
+// adding the middleware as the second argument so the middleware is particular to specific apis
+server.use("/api/todos", authorizationMiddleware, todosRouter);
+server.use("/api/users", authorizationMiddleware, usersRouter);
 server.use("/api/register", registerRouter);
 server.use("/api/login", loginRouter);
 

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run-server": "node index.js",
     "dev": "nodemon index.js",
-    "dev-express": "nodemon exp-server.js",
+    "dev-express": "node --watch exp-server.js",
     "prod-express": "node exp-server.js"
   },
   "author": "",

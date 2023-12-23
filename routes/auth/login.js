@@ -1,13 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { userModel } from "../../db-utils/models.js";
+import { generateToken } from "./jwt-utils.js";
 
 const loginRouter = express.Router();
 
 // API for verifying the user
 loginRouter.post("/", async (req, res) => {
   const { body } = req; // this will have email and password
-
   try {
     const existingUser = await userModel.findOne({ email: body.email });
 
@@ -23,6 +23,7 @@ loginRouter.post("/", async (req, res) => {
           msg: "User authenticated successfully",
           userDetails: authenticatedUser,
           code: 1,
+          accessToken: generateToken({ email: body.email }, "10s"),
         });
       } else {
         res.status(401).send({ msg: "Invalid Credentials", code: 0 });
